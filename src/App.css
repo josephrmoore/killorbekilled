@@ -148,6 +148,20 @@ input[type=number]::-webkit-outer-spin-button {
 	background: url("../public/pbs.jpg") no-repeat 0 0;
 	background-size: 75px;
 }
+.ammo_input.m.on {
+	background: url("../public/missiles_on.jpg") no-repeat 0 0;
+	background-size: 75px;
+}
+
+.ammo_input.s.on {
+	background: url("../public/supers_on.jpg") no-repeat 0 0;
+	background-size: 75px;
+}
+
+.ammo_input.pb.on {
+	background: url("../public/pbs_on.jpg") no-repeat 0 0;
+	background-size: 75px;
+}
 
 
 .playerinput {
@@ -476,8 +490,8 @@ h3 {
 }
 
 .beam_input .beam.active {
-	background-color: #fcfcae;
-	border-color: rgba(12, 245, 47, 0.34);
+	background-color: #91ff69;
+	border-color: rgba(81, 181, 72, 1);
 }
 
 .beam_input.I button {

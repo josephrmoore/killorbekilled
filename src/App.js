@@ -87,7 +87,7 @@ function App() {
 	const handleQs = e => {
 		var orig_0 = qs[0];
 		var orig_1 = qs[1];
-		
+		console.log("HANDLE QS!!!");
 		
 		if(e.target.value==="0"){
 			orig_0 = e.target.checked;
@@ -130,13 +130,28 @@ function App() {
 	};
 	
 	const resetQs = e => {
-		// This whole thing is jank as hell. if we add mroe bosses it will break
+		// This whole thing is jank as hell. if we add more bosses it will break
 		if(boss.id==="ridley"){
 			// we will switch to MB
 			qs[0] = true;
 			qs[1] = false;
 		} else if(boss.id==="mb"){
 			// we will switch to Ridley
+			qs[0] = false;
+			qs[1] = false;
+		}
+//		console.log(qs);
+	};
+	
+	
+	const resetQsSame = e => {
+		// This whole thing is jank as hell. if we add more bosses it will break
+		if(boss.id==="mb"){
+			// we will reinitialize MB
+			qs[0] = true;
+			qs[1] = false;
+		} else if(boss.id==="ridley"){
+			// we will reinitialize Ridley
 			qs[0] = false;
 			qs[1] = false;
 		}
@@ -184,17 +199,45 @@ function App() {
 	};
 	
 	const handleAmmoInput = e => {
+		console.log(inventory.ammo);
 		var m = inventory.ammo.m;
 		var s = inventory.ammo.s;
 		var pb = inventory.ammo.pb;
 		const beams = inventory.beams;
-		
+		console.log(e.target.id);
+		console.log(qs);
+		console.log(pb);
 		if(e.target.id === "m"){
 			m = e.target.value;
 		} else if(e.target.id === "s"){
 			s = e.target.value;
 		} else if(e.target.id === "pb"){
 			pb = e.target.value;
+			console.log("pb handle ammo");
+			var pbval = sliders.pb.value;
+			var xval = sliders.x.value;
+
+			if(Number(pbval)>Number(pb) && Number(xval)===0){
+				pbval = pb;
+			}
+			
+			if(Number(xval)>Number(pb) && Number(pbval)===0){
+				xval = pb;
+			}
+			if((Number(xval)+Number(pbval))>pb){
+				console.log();
+				var loopdone = false;
+				while((Number(xval)+Number(pbval))>pb){
+					xval--;
+					pbval--;
+				}
+				if((Number(xval)+Number(pbval))>pb){
+					pbval++;
+					xval = pbval;
+				}
+			}
+
+			
 			setSliders({
 				"ammo_charge" : {
 					"value" : sliders.ammo_charge.value,
@@ -207,14 +250,14 @@ function App() {
 					"max" : sliders.s_m.max
 				},
 				"pb" : {
-					"value" : sliders.pb.value,
+					"value" : pbval,
 					"min" : sliders.pb.min,
-					"max" : pb
+					"max" : (Number(pb)-Number(xval))
 				},
 				"x" : {
-					"value" : sliders.x.value,
+					"value" : xval,
 					"min" : sliders.x.min,
-					"max" : pb
+					"max" : (Number(pb)-Number(pbval))
 				}
 			});
 		}
@@ -227,7 +270,16 @@ function App() {
 			},
 			"beams" : beams
 		}
-		
+/*
+		handleQs({
+			clear: true
+		});
+*/
+
+		console.log(typeof pb);
+		if(Number(pb)===0){
+			resetQsSame(e);
+		}
 		setInventory(obj);
  	};
  	
@@ -417,25 +469,28 @@ function PlayerInput(props){
 				<BeamInput inventory={props.inventory} type="Plasma" classText="P" handleBeamInput={props.handleBeamInput} />
 			</div>
 			<div className="ammo">
-				<AmmoInput type="Missiles" classText="m" handleAmmoInput={props.handleAmmoInput} />
-				<AmmoInput type="Supers" classText="s" handleAmmoInput={props.handleAmmoInput} />
-				<AmmoInput type="PBs" classText="pb" handleAmmoInput={props.handleAmmoInput} />
+				<AmmoInput val={props.inventory.ammo.m} type="Missiles" classText="m" handleAmmoInput={props.handleAmmoInput} />
+				<AmmoInput val={props.inventory.ammo.s} type="Supers" classText="s" handleAmmoInput={props.handleAmmoInput} />
+				<AmmoInput val={props.inventory.ammo.pb} type="PBs" classText="pb" handleAmmoInput={props.handleAmmoInput} />
 			</div>
 			{boss_qs}
 		</form>
 	);
 }
 function AmmoInput(props){
-
+	var classname = "";
+	if(props.val>0){
+		classname = " on"
+	}
 	return (
-		<div className={"ammo_input "+props.classText}>
+		<div className={"ammo_input "+props.classText+classname}>
 			<input
 				id={props.classText}
 				type="number"
 				min="0"
 				max="500"
 				onChange={props.handleAmmoInput}
-				value={props.value}
+				value={props.val}
 				placeholder="0"
 				step="5"
 			/>
@@ -528,15 +583,16 @@ function ResultsControls(props){
 		if(props.qs[0]){
 			// PBs
 			slider_ridley1 = (
-				<ResultsSlider idName="slider_pb" handleSliders={props.handleSliders} min={props.sliders.pb.min} max={props.sliders.pb.max} value={props.sliders.pb.value} label={props.sliders.pb.max} />
+				<ResultsSlider inventory={props.inventory} idName="slider_pb" handleSliders={props.handleSliders} min={props.sliders.pb.min} max={props.sliders.pb.max} value={props.sliders.pb.value} label={props.sliders.pb.max} />
 			);
 		}
 		if(props.qs[1]){
 			// Xfactors
 			slider_ridley2 = (
-				<ResultsSlider idName="slider_x" handleSliders={props.handleSliders} min={props.sliders.x.min} max={props.sliders.x.max} value={props.sliders.x.value} label={props.sliders.x.max} />
+				<ResultsSlider inventory={props.inventory} idName="slider_x" handleSliders={props.handleSliders} min={props.sliders.x.min} max={props.sliders.x.max} value={props.sliders.x.value} label={props.sliders.x.max} />
 			);
 		}
+		console.log("results controls FIRING");
 		slider_ridley = (
 			<div className="ridley_sliders">
 				{slider_ridley1}
@@ -558,8 +614,8 @@ function ResultsControls(props){
 function ResultsSlider(props){
 	return(
 		<div className={"results_slider "+props.idName}>
-			<input id={props.idName} className="slider" type="range" min={props.min} max={props.max} value={props.value} step="1" onChange={props.handleSliders} />
-			<label htmlFor={props.idName}>{props.max-props.value}PBs left</label>
+			<input id={props.idName} data-inv={props.inventory} className="slider" type="range" min={props.min} max={props.max} value={props.value} step="1" onChange={props.handleSliders} />
+			<label htmlFor={props.idName}>{(Number(props.max)-Number(props.value))}PBs left</label>
 		</div>
 	);
 }
