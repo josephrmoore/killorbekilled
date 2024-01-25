@@ -7,14 +7,14 @@ function App() {
 	const bosses = [{
 		"name" : "Ridley",
 		"id" : "ridley",
-		"img" : "imgurlgoeshere",
+		"img" : "ridley.jpg",
 		"hp" : 18000,
 		"index" : 0,
 	}, {
 		"name" : "Mother Brain",
 		"id" : "mb",
-		"img" : "imgurlgoeshere",
-		"hp" : 21000,
+		"img" : "mb1.jpg",
+		"hp" : 3000,
 		"index" : 1
 	}];
 	
@@ -170,6 +170,13 @@ function App() {
 	const handleBoss = e => {
 		resetQs();
 		setBoss(bosses[e.target.dataset.index]);
+/*
+		var allbutts = document.getElementsByClassName("boss_button");
+		for(var i=0; i<allbutts.length; i++){
+			allbutts[i].classList.remove("active");
+		}
+		e.target.classList.add("active");	
+*/
 	};
 
 	const handleVerdict = e => {
@@ -340,6 +347,7 @@ function Header(props){
 	
 	return (
 		<header className="header">
+			<a className="home" href="https://supermetroid.xyz">supermetroid.xyz</a>
 			<HeaderWord active={actives[0]} value="Kill" /> or <HeaderWord className={actives[1]} active={actives[1]} value="Be Killed" />
 		</header>
 	);
@@ -364,7 +372,7 @@ function PlayerInput(props){
 	if(props.boss.id==="ridley"){
 		if(props.inventory.ammo.pb>0){
 			boss_q1 = (
-				<div>
+				<div className="q_pbs">
 					<label htmlFor="q_pbs">Use Power Bombs?</label>
 					<input type="checkbox" value="0" id="q_pbs" onChange={props.handleQs} />
 				</div>
@@ -373,7 +381,7 @@ function PlayerInput(props){
 		if(props.inventory.ammo.pb>0 && props.inventory.beams.W && props.inventory.beams.C){
 //			console.log("has pbs and wave");
 			boss_q2 = (
-			<div>
+			<div className="q_x">
 				<label htmlFor="q_x">Use X-factors?</label>
 				<input type="checkbox" value="1" id="q_x" onChange={props.handleQs} />
 			</div>
@@ -383,6 +391,7 @@ function PlayerInput(props){
 			<div className="bossqs">
 				{boss_q1}
 				{boss_q2}
+				<ResultsControls inventory={props.inventory} boss={props.boss} sliders={props.sliders} handleVerdict={props.handleVerdict} handleSliders={props.handleSliders} qs={props.qs} />
 			</div>
 		);
 	} else if(props.boss.id==="mb" && false){
@@ -392,17 +401,14 @@ function PlayerInput(props){
 				<input type="checkbox" value="0" id="q_zeb" onChange={props.handleQs} defaultChecked />
 				<label htmlFor="q_refill">Refill missiles?</label>
 				<input type="checkbox" value="1" id="q_refill" onChange={props.handleQs} />
+				<ResultsControls inventory={props.inventory} boss={props.boss} sliders={props.sliders} handleVerdict={props.handleVerdict} handleSliders={props.handleSliders} qs={props.qs} />
 			</div>
 		);
 	}
 
 	return (
-		<form className="playerinput">
-			<div className="ammo">
-				<AmmoInput type="Missiles" classText="m" handleAmmoInput={props.handleAmmoInput} />
-				<AmmoInput type="Supers" classText="s" handleAmmoInput={props.handleAmmoInput} />
-				<AmmoInput type="PBs" classText="pb" handleAmmoInput={props.handleAmmoInput} />
-			</div>
+		<form className="playerinput group">
+			<div className="input_headline"><h2>Input your BEAMS/AMMO</h2></div>
 			<div className="beams">
 				<BeamInput inventory={props.inventory} type="Charge" classText="C" handleBeamInput={props.handleBeamInput} />
 				<BeamInput inventory={props.inventory} type="Ice" classText="I" handleBeamInput={props.handleBeamInput} />
@@ -410,8 +416,12 @@ function PlayerInput(props){
 				<BeamInput inventory={props.inventory} type="Wave" classText="W" handleBeamInput={props.handleBeamInput} />
 				<BeamInput inventory={props.inventory} type="Plasma" classText="P" handleBeamInput={props.handleBeamInput} />
 			</div>
+			<div className="ammo">
+				<AmmoInput type="Missiles" classText="m" handleAmmoInput={props.handleAmmoInput} />
+				<AmmoInput type="Supers" classText="s" handleAmmoInput={props.handleAmmoInput} />
+				<AmmoInput type="PBs" classText="pb" handleAmmoInput={props.handleAmmoInput} />
+			</div>
 			{boss_qs}
-			<ResultsControls inventory={props.inventory} boss={props.boss} sliders={props.sliders} handleVerdict={props.handleVerdict} handleSliders={props.handleSliders} qs={props.qs} />
 		</form>
 	);
 }
@@ -419,7 +429,6 @@ function AmmoInput(props){
 
 	return (
 		<div className={"ammo_input "+props.classText}>
-			<label htmlFor={props.classText}>{props.type}</label>
 			<input
 				id={props.classText}
 				type="number"
@@ -430,6 +439,7 @@ function AmmoInput(props){
 				placeholder="0"
 				step="5"
 			/>
+			<label htmlFor={props.classText}>{props.type}</label>
 		</div>
 	);
 }
@@ -461,12 +471,18 @@ function BeamInput(props){
 }
 
 function BossFrame(props){
-	
+	console.log(props);
+//	var classname = "";
+	var currboss = props.boss.id;
+	console.log("FRAME");
+	console.log(currboss);
 	return (
-		<div className="bossframe">
+		<div className="bossframe group">
+			<div className="boss_buttons">
 			{props.allbosses.map(data => (
-				<button key={data.index} name={data.name} id={data.id+"_button"} data-index={data.index} img={data.img} onClick={props.handleBoss}>{data.name}</button>
+				<button key={data.index} name={data.name} className={"boss_button"+((currboss===data.id) ? " active" : "")} id={data.id+"_button"} data-index={data.index} img={data.img} onClick={props.handleBoss}>{data.name}</button>
 			))}
+			</div>
 			{props.allbosses.map(data => (
 				<BossPage key={data.index} name={data.name} id={data.id} img={data.img} verdict={props.verdict} inventory={props.inventory} qs={props.qs} results={props.results} boss={props.boss} sliders={props.sliders} handleResults={props.handleResults} handleVerdict={props.handleVerdict} handleSliders={props.handleSliders} />
 			))}
@@ -479,12 +495,26 @@ function BossPage(props){
 	if(props.id===props.boss.id){
 		hidden_class = "";
 	}
+	var mb = null;
+	if(props.boss.id==="mb"){
+		mb = (
+			<div className="boss_pic_name_hp mb2">
+				<img src={"mb2.jpg"} />
+				<span className="boss_name">Mother Brain <span className="finalform">(Final Form)</span></span>
+				<span className="boss_hp_text">HP: <span className="boss_hp">18000</span></span>
+			</div>
+		);
+	}
+	console.log(props.boss);
+	
 	return (
 		<div className={"bosspage"+" "+props.id+" "+hidden_class}>
-			<span className="boss_name">{props.name}</span>
-			<img src={props.img} />
-			
-
+			<div className={"boss_pic_name_hp "+props.boss.id}>
+				<img src={props.img} />
+				<span className="boss_name">{props.name}</span>
+				<span className="boss_hp_text">HP: <span className="boss_hp">{props.boss.hp}</span></span>
+			</div>
+			{mb}
 			<ResultsContainer verdict={props.verdict} inventory={props.inventory} qs={props.qs} results={props.results} boss={props.boss} sliders={props.sliders} handleResults={props.handleResults} handleVerdict={props.handleVerdict} handleSliders={props.handleSliders} />
 
 		</div>
@@ -508,10 +538,9 @@ function ResultsControls(props){
 			);
 		}
 		slider_ridley = (
-			<div>
+			<div className="ridley_sliders">
 				{slider_ridley1}
 				{slider_ridley2}
-				<p>{props.sliders.pb.max-props.sliders.pb.value} PBs left</p>
 			</div>
 		);
 	}
@@ -528,9 +557,9 @@ function ResultsControls(props){
 }
 function ResultsSlider(props){
 	return(
-		<div>
+		<div className={"results_slider "+props.idName}>
 			<input id={props.idName} className="slider" type="range" min={props.min} max={props.max} value={props.value} step="1" onChange={props.handleSliders} />
-			<label className="off" htmlFor={props.idName}>{props.max-props.value} left</label>
+			<label htmlFor={props.idName}>{props.max-props.value}PBs left</label>
 		</div>
 	);
 }
@@ -538,16 +567,17 @@ function ResultsSlider(props){
 function ResultsHeadline(props){
 	if(props.verdict){
 		return (
-			<h3 className="verdict_headline">YOU CAN DO IT</h3>
+			<h3 className="verdict_headline yes">YOU CAN DO IT</h3>
 		);
 	} else {
 		return (
-			<h3 className="verdict_headline">YOU WILL DIE</h3>
+			<h3 className="verdict_headline no">YOU WILL DIE</h3>
 		);
 	}
 }
 function ResultsContainer(props){
 	var numC = -1;
+	var numC2 = -1;
 		// bools
 	var usePbs = props.qs[0];
 	var useX = props.qs[1];
@@ -639,6 +669,7 @@ function ResultsContainer(props){
 		
 		beam_damage = beam_damage_table[beam_string];
 		numC = Math.ceil((hp/beam_damage));
+		numC2 = Math.ceil((18000/beam_damage));
 	}
 
 	if(props.boss.id==="ridley"){
@@ -685,6 +716,10 @@ function ResultsContainer(props){
 						if(sKillWith>0 && numS-sKillWith>0){
 							s_left = numS-sKillWith;
 						}
+						if(numM-mKillWith>0){
+							s_left += Math.floor(((numM-mKillWith)/6));
+						}
+
 						var pbsUsed = pbKillWith+xKillWith;
 						console.log("HEHEHEH");
 						console.log(pbsUsed);
@@ -711,11 +746,15 @@ function ResultsContainer(props){
 					}
 				} else {
 					// after x, pb, supers kill
+					console.log(current_hp);
 					sKillWith = Math.ceil((current_hp/600));
+					console.log(sKillWith);
 					if(sKillWith===30){
 						pbKillWith = 0;
 						mKillWith = 0;
 					}
+					m_left = numM-mKillWith;
+					
 /*
 					console.log("super death");
 					console.log(numS);
@@ -771,8 +810,8 @@ function ResultsContainer(props){
 	} else {
 //		console.log("mb");
 
-		var hp1 = 3000;
-		var hp2 = hp-3000;
+		var hp1 = hp;
+		var hp2 = 18000;
 		
 		// MB1 logic
 		currM = numM;
@@ -806,10 +845,11 @@ function ResultsContainer(props){
 		
 		mAfterGlass = currM;
 		sAfterGlass = currS;
-		
+		m_left2 = currM;
+		s_left2 = currS;
 		
 		// remaining ammo must be at least 12 hits (after breaking the glass) and at least 3000 damage
-		if((currM+currS)>=12 && ((currM*100)+(currS*300))>3000){
+		if((currM+currS)>=12 && ((currM*100)+(currS*300))>=3000){
 			if(currS>8 && currM>2){
 				sKillWithMB1 = 9;
 				mKillWithMB1 = 3;
@@ -851,22 +891,25 @@ function ResultsContainer(props){
 			}
 			numS_MB2 = currS;
 			numM_MB2 = currM;
+			m_left2 = numM_MB2;
+			s_left2 = numS_MB2;
 		}
 		
 		// mb2 logic calculations
 		
-		if(((currM*100)+(currS*300)>hp2) || hasCharge){
+		if(((currM*100)+(currS*300)>=hp2) || hasCharge){
 			mb2 = true;
 			
 			if((currS*300)>=hp2){
 				// only supers
 				sKillWithMB2 = (Math.ceil((hp2/300))<=currS) ? Math.ceil((hp2/300)) : -2;
 				s_left2 = (currS-sKillWithMB2>=0) ? currS-sKillWithMB2 : 0;
+				m_left2 = currM;
 			} else {
 				var calc_hp = hp2;
 				calc_hp -= (currS*300);
 				sKillWithMB2 = currS;
-
+				s_left2 = 0;
 				if(((currS*300)+(currM*100))>=hp2){
 					// only supers and missiles
 					mKillWithMB2 = (Math.ceil((calc_hp/100))<=currM) ? Math.ceil((calc_hp/100)) : -2;
@@ -876,11 +919,13 @@ function ResultsContainer(props){
 					calc_hp -= (currM*100);
 					mKillWithMB2 = currM;
 					cKillWithMB2 = Math.ceil((calc_hp/beam_damage));
+					m_left2 = 0;
 				}
 			}
 		}
-		
-		
+		console.log("LEFTS!!!!");
+		console.log(s_left2);
+		console.log(m_left2);
 //	console.log(currM + " " + currS);	
 	}
 	useEffect(() => {
@@ -891,8 +936,6 @@ function ResultsContainer(props){
 				props.handleVerdict(false);
 			}
 		} else {
-			// replace with actual logic
-			
 			if(mb1 && mb2){
 				props.handleVerdict(true);		
 			} else {
@@ -948,29 +991,36 @@ function ResultsContainer(props){
 		x : 0
 	};
 	
+	console.log(miss_obj);
+	
+	var verdict_class = " no";
+	if(props.verdict){
+		verdict_class = " yes";
+	}
+	
 	if(props.boss.id==="ridley"){
 		return (
-			<div>
+			<div className={"results_container group"+verdict_class}>
 				<ResultsHeadline verdict={props.verdict} />
 				<KillWith verdict={props.verdict} boss={props.boss} firepower={firepower_obj_r} />
-				<CanMiss hasCharge={hasCharge} beam={beam_damage} verdict={props.verdict} firepower={firepower_obj_r} miss={miss_obj} boss={props.boss} />
+				<CanMiss hasCharge={hasCharge} beam={beam_damage} verdict={props.verdict} firepower={firepower_obj_r} miss={miss_obj} boss={props.boss} brain={0} />
 				<StillNeed inventory={props.inventory} boss={props.boss} verdict={props.verdict} beam={beam_damage} mb1={mb1} mb2={mb2} sliders={props.sliders} currM={currM} currS={currS} glass={[mGlass, sGlass, mAfterGlass, sAfterGlass]} />
 				<ChargeShots boss={props.boss} verdict={props.verdict} charge={hasCharge} numC={numC} />
 			</div>
 		);
 	} else if (props.boss.id==="mb"){
 		return (
-			<div>
+			<div className={"results_container"+verdict_class}>
 				<ResultsHeadline verdict={props.verdict} />
 				<StillNeed inventory={props.inventory} boss={props.boss} verdict={props.verdict} beam={beam_damage} mb1={mb1} mb2={mb2} sliders={props.sliders} currM={numM_MB2} currS={numS_MB2} glass={[mGlass, sGlass, mAfterGlass, sAfterGlass]} />
 				<div className="mb1">
 					<KillWith verdict={props.verdict} boss={props.boss} firepower={firepower_obj_mb1} brainid="1" />
-					<CanMiss verdict={props.verdict} hasCharge={hasCharge} beam={beam_damage} firepower={firepower_obj_mb1} miss={miss_obj} boss={props.boss} />
+					<CanMiss verdict={props.verdict} hasCharge={false} beam={beam_damage} firepower={firepower_obj_mb1} miss={miss_obj2} boss={props.boss} brain={1} />
 				</div>
 				<div className="mb2">
 					<KillWith verdict={props.verdict} boss={props.boss} firepower={firepower_obj_mb2} brainid="2" />
-					<CanMiss verdict={props.verdict} firepower={firepower_obj_mb2} miss={miss_obj} boss={props.boss} />
-					<ChargeShots boss={props.boss} verdict={props.verdict} charge={hasCharge} numC={numC} />
+					<CanMiss verdict={props.verdict} hasCharge={hasCharge} beam={beam_damage} firepower={firepower_obj_mb2} miss={miss_obj2} boss={props.boss} brain={2} />
+					<ChargeShots boss={props.boss} verdict={props.verdict} charge={hasCharge} numC={numC2} />
 				</div>
 				
 			</div>
@@ -992,27 +1042,27 @@ function KillWith(props){
 	
 	if(m_val>0){
 		m = (
-			<p className="killwith_m"><span className="m_value">{m_val}</span> Missiles</p>
+			<p className="killwith_m"><span className="m_value">{m_val}</span> <span className="item m">Missiles</span></p>
 		);
 	}
 	if(s_val>0){
 		s = (
-			<p className="killwith_s"><span className="s_value">{s_val}</span> Supers</p>
+			<p className="killwith_s"><span className="s_value">{s_val}</span> <span className="item s">Supers</span></p>
 		);
 	}
 	if(pb_val>0){
 		pb = (
-			<p className="killwith_pb"><span className="pb_value">{pb_val}</span> PBs</p>
+			<p className="killwith_pb"><span className="pb_value">{pb_val}</span> <span className="item pb">PBs</span></p>
 		);
 	}
 	if(x_val>0){
 		x = (
-			<p className="killwith_x"><span className="x_value">{x_val}</span> X-Factors</p>
+			<p className="killwith_x"><span className="x_value">{x_val}</span> <span className="item x">X-Factors</span></p>
 		);
 	}
 	if(c_val>0){
 		c = (
-			<p className="killwith_c"><span className="c_value">{c_val}</span> Charge Shots</p>
+			<p className="killwith_c"><span className="c_value">{c_val}</span> <span className="item c">Charge Shots</span></p>
 		);
 	}
 	
@@ -1022,7 +1072,7 @@ function KillWith(props){
 //	console.log(props.firepower);
 	if(props.firepower.glassM>0){
 		glass1 = (
-			<span className="glass_break_m"><span className="value">{props.firepower.glassM}</span> Missiles</span>
+			<span className="glass_break_m"><span className="value">{props.firepower.glassM}</span> <span className="item m">Missiles</span></span>
 		);
 		glass = (
 			<div className="glass_break_message">
@@ -1035,7 +1085,7 @@ function KillWith(props){
 	if(props.firepower.glassS>0){
 		var yesand = null;
 		glass2 = (
-			<span className="glass_break_s"><span className="value">{props.firepower.glassS}</span> Supers</span>
+			<span className="glass_break_s"><span className="value">{props.firepower.glassS}</span> <span className="item s">Supers</span></span>
 		);
 		if(props.firepower.glassM>0){
 			yesand = " and ";
@@ -1092,7 +1142,7 @@ function StillNeed(props){
 	
 	var currM = props.currM;
 	var currS = props.currS;
-	console.log(numX);
+//	console.log(numX);
 	if(!props.verdict){
 		if(props.boss.id==="ridley"){
 			var hp_left = hp-((numM*100)+(numS*600)+(numPbs*400)+(numX*1200));
@@ -1101,33 +1151,41 @@ function StillNeed(props){
 			var needS = 0;
 			var needPb = 0;
 			var needX = 0;
-			var m = null;
-			var s = null;
-			var pb = null;
-			var x = null;
+			var m = (
+					<p className="stillneed_items stillneed_m"><span className="value">180</span> <span className="item m">Missiles</span><span className="stillneed_or"> OR </span></p>
+				);
+			var s = (
+					<p className="stillneed_items stillneed_s"><span className="value">30</span> <span className="item s">Supers</span><span className="stillneed_or"> OR </span></p>
+				);
+			var pb = (
+					<p className="stillneed_items stillneed_pb"><span className="value">45</span> <span className="item pb">Power Bombs</span><span className="stillneed_or"> OR </span></p>
+				);
+			var x = (
+					<p className="stillneed_items stillneed_x"><span className="value">15</span> <span className="item x">X-Factors</span><span className="stillneed_or"> OR </span></p>
+				);
 			
 			if(numM>0){
 				needM = Math.ceil((hp_left/100));
 				m = (
-					<p className="stillneed_items stillneed_m"><span className="value">{needM}</span> Missiles<span className="stillneed_or"> OR </span></p>
+					<p className="stillneed_items stillneed_m"><span className="value">{needM}</span> <span className="item m">Missiles</span><span className="stillneed_or"> OR </span></p>
 				);
 			}
 			if(numS>0){
 				needS = Math.ceil((hp_left/600));
 				s = (
-					<p className="stillneed_items stillneed_s"><span className="value">{needS}</span> Supers<span className="stillneed_or"> OR </span></p>
+					<p className="stillneed_items stillneed_s"><span className="value">{needS}</span> <span className="item s">Supers</span><span className="stillneed_or"> OR </span></p>
 				);
 			}
 			if(numPbs>0){
 				needPb = Math.ceil((hp_left/400));
 				pb = (
-					<p className="stillneed_items stillneed_pb"><span className="value">{needPb}</span> Power Bombs<span className="stillneed_or"> OR </span></p>
+					<p className="stillneed_items stillneed_pb"><span className="value">{needPb}</span> <span className="item pb">Power Bombs</span><span className="stillneed_or"> OR </span></p>
 				);
 			}
 			if(numX>0){
 				needX = Math.ceil((hp_left/1200));
 				x = (
-					<p className="stillneed_items stillneed_x"><span className="value">{needX}</span> X-Factors<span className="stillneed_or"> OR </span></p>
+					<p className="stillneed_items stillneed_x"><span className="value">{needX}</span> <span className="item x">X-Factors</span><span className="stillneed_or"> OR </span></p>
 				);
 			}
 	
@@ -1143,8 +1201,8 @@ function StillNeed(props){
 			);
 		} else if (props.boss.id==="mb"){
 			// need current ammo levels here to do this correctly
-			var hp1 = 3000;
-			var hp2 = hp-hp1;
+			var hp1 = hp;
+			var hp2 = 18000;
 			
 			var glassM = (props.glass[0]<0) ? 0 : props.glass[0];
 			var glassS = (props.glass[1]<0) ? 0 : props.glass[1];
@@ -1172,7 +1230,7 @@ function StillNeed(props){
 				if(afterGlassM>0){
 					needM = Math.ceil((hp_left1/100));
 					m = (
-						<p className="stillneed_items stillneed_m"><span className="value">{needM}</span> Missiles </p>
+						<p className="stillneed_items stillneed_m"><span className="value">{needM}</span> <span className="item m">Missiles</span> </p>
 					);
 				}
 				if(afterGlassS>0){
@@ -1183,7 +1241,7 @@ function StillNeed(props){
 						);
 					}
 					s = (
-						<p className="stillneed_items stillneed_s"><span className="value">{needS}</span> Supers </p>
+						<p className="stillneed_items stillneed_s"><span className="value">{needS}</span> <span className="item s">Supers</span> </p>
 					);
 				}
 				
@@ -1191,17 +1249,19 @@ function StillNeed(props){
 					if(glassM+glassS<6){
 						console.log(6-(glassM+glassS));
 						g1 = (
-							<div>
-							<p className="glassText">{6-(glassM+glassS)} more missiles or supers to break a hole in the glass before you can damage Mother Brain.</p>
-							<p>PLUS</p>
+							<div className="glass_ex">
+								<p className="glassText">{6-(glassM+glassS)} more <span className="item m">Missiles</span> or <span className="item s">Supers</span> to break a hole in the glass before you can damage Mother Brain.</p>
+								<p>PLUS</p>
 							</div>
 						);
 					}
 					if((afterGlassM+afterGlassS)<18){
 						g2 = (
-							<div>
-							<p>You must have a combination of at least 18 missiles and supers that deal a minimum of <span className="value">{hp1}</span> damage. </p>
-							<p className="shotCountText">In addition to her HP, you must also hit her a minimum of 18 times before she will die. 6 to break a hole in the glass, and 12 more hits to fully break the glass. Hits on the brain itself count as a hit on the glass as well as doing damage.</p>
+							<div className="glass_ex">
+								<p>You must have a combination of at least <span className="value">18</span> <span className="item m">Missiles</span> and <span className="item s">Supers</span> that deal a minimum of <span className="value">{hp1}</span> damage. </p>
+								<p className="shotCountText">In addition to her HP, you must also hit her a minimum of <span className="value">18</span> times before she will die.</p>
+								<p><span className="value">6</span> to break a hole in the glass, and <span className="value">12</span> more hits to fully break the glass.</p>
+								<p>Hits on the brain itself count as a hit on the glass as well as doing damage.</p>
 							</div>
 						);
 					}
@@ -1210,7 +1270,7 @@ function StillNeed(props){
 				var explan = null;
 				if(props.verdict){
 					explan = (
-						<span className="explanation">MB1 has 3000HP, but you need 6 missiles or supers to break through the tank. This does no damage. After that, you have to hit her a minimum of 12 more times, no matter how much damage each hit does, in order to finish breaking the glass. Any missile or super that hits the glass and not the brain will deliver 0 damage, but still count as one of the 12 hits needed to finish the boss.</span>
+						<span className="explanation">MB1 has 3000HP, but you need <span className="value">6</span> <span className="item m">Missiles</span> or <span className="item s">Supers</span> to break through the tank. This does no damage. After that, you have to hit her a minimum of <span className="value">12</span> more times, no matter how much damage each hit does, in order to finish breaking the glass. Any <span className="item m">Missile</span> or <span className="item s">Super</span> that hits the glass and not the brain will deliver <span className="value">0</span> damage, but still count as one of the <span className="value">12</span> hits needed to finish the boss.</span>
 					);
 				}
 				mb1 = (
@@ -1230,13 +1290,13 @@ function StillNeed(props){
 				if(numM>0){
 					needM = Math.ceil((hp_left2/100));
 					m = (
-						<p className="stillneed_items stillneed_m"><span className="value">{needM}</span> Missiles</p>
+						<p className="stillneed_items stillneed_m"><span className="value">{needM}</span> <span className="item m">Missiles</span></p>
 					);
 				}
 				if(numS>0){
 					needS = Math.ceil((hp_left2/300));	
 					s = (
-						<p className="stillneed_items stillneed_s"><span className="value">{needS}</span> Supers</p>
+						<p className="stillneed_items stillneed_s"><span className="value">{needS}</span> <span className="item s">Supers</span></p>
 					);
 				}
 				mb2 = (
@@ -1244,7 +1304,7 @@ function StillNeed(props){
 						<h3>To kill Mother Brain 2, you would still need: </h3>
 						{m}
 						{s}
-						<p>OR Charge beam.</p>
+						<p>OR <span className="item c">Charge beam</span>.</p>
 					</div>
 				);
 			}
@@ -1283,23 +1343,23 @@ function CanMiss(props){
 		);	
 		if(props.firepower.m>0){
 			m = (
-				<p className="miss_m"><span className="value">{props.miss.m}</span> Missiles</p>
+				<p className="miss_m"><span className="value">{props.miss.m}</span> <span className="item m">Missiles</span></p>
 			);
 		}
 		if(props.firepower.s>0){
 			s = (
-				<p className="miss_s"><span className="value">{props.miss.s}</span> Supers</p>
+				<p className="miss_s"><span className="value">{props.miss.s}</span> <span className="item s">Supers</span></p>
 			);
 		}
 		if(props.boss.id==="ridley"){
 			if(props.firepower.pb>0){
 				pb = (
-					<p className="miss_pb"><span className="value">{props.miss.pb}</span> PB hit</p>
+					<p className="miss_pb"><span className="value">{props.miss.pb}</span> <span className="item pb">PB</span> hit</p>
 				);
 			}
 			if(props.firepower.x>0){
 				x = (
-					<p className="miss_x"><span className="value">{props.miss.x}</span> X-factor particles</p>
+					<p className="miss_x"><span className="value">{props.miss.x}</span> <span className="item x">X-factor</span> particles</p>
 				);
 			}
 		}
@@ -1332,42 +1392,42 @@ function CanMiss(props){
 			var perShot_pb = Math.floor((beam/100));
 			
 			var lowM = (
-				<p className="miss_m_lowc"><span className="value">{numShots_m}</span> MORE charge shots per missile you missed.</p>
+				<p className="miss_m_lowc"><span className="value">{numShots_m}</span> MORE <span className="item c">charge shots</span> per <span className="item m">Missile</span> you missed.</p>
 			);
 			var lowS = (
-				<p className="miss_s_lowc"><span className="value">{numShots_sx}</span> MORE charge shots per super you missed.</p>
+				<p className="miss_s_lowc"><span className="value">{numShots_sx}</span> MORE <span className="item c">charge shots</span> per <span className="item s">Super</span> you missed.</p>
 			);
 			
 			var lowPb = null;
 			if(props.firepower.x>0){
 				lowPb = (
-					<p className="miss_pb_lowc"><span className="value">{numShots_pb}</span> MORE charge shots per power bomb you missed.</p>
+					<p className="miss_pb_lowc"><span className="value">{numShots_pb}</span> MORE <span className="item c">charge shots</span> per <span className="item pb">Power Bomb</span> you missed.</p>
 				);
 			}
 			var lowX = null;
 			
 			if(props.firepower.x>0){
 				lowX = (
-					<p className="miss_x_lowc"><span className="value">{numShots_sx}</span> MORE charge shots per x-factor particle you missed.</p>
+					<p className="miss_x_lowc"><span className="value">{numShots_sx}</span> MORE <span className="item c">charge shots</span> per <span className="item x">X-Factor</span> particle you missed.</p>
 				);
 			}
 			
 			var highM = (
-				<p className="miss_m_lowc"><span className="value">{perShot_m}</span> missiles</p>
+				<p className="miss_m_lowc"><span className="value">{perShot_m}</span> <span className="item m">Missiles</span></p>
 			);
 			var highS = (
-				<p className="miss_s_lowc"><span className="value">{perShot_sx}</span> supers</p>
+				<p className="miss_s_lowc"><span className="value">{perShot_sx}</span> <span className="item s">Supers</span></p>
 			);
 			var highPb = null;
 			if(props.firepower.pb>0){
 				highPb = (
-					<p className="miss_pb_lowc"><span className="value">{perShot_pb}</span> power bomb hits</p>
+					<p className="miss_pb_lowc"><span className="value">{perShot_pb}</span> <span className="item pb">Power Bomb</span> hits</p>
 				);
 			}
 			var highX = null;
 			if(props.firepower.x>0){
 				highX = (
-					<p className="miss_x_lowc"><span className="value">{perShot_sx}</span> x-factor particles</p>
+					<p className="miss_x_lowc"><span className="value">{perShot_sx}</span> <span className="item x">X-Factor</span> particles</p>
 				);
 			}
 	
@@ -1384,7 +1444,7 @@ function CanMiss(props){
 			} else if (beam<200){
 				miss = (
 					<div className="canmiss charge">
-						<h3>For every extra charge shot, you can miss: </h3>
+						<h3>For every extra <span className="item c">charge shot</span>, you can miss: </h3>
 						{highM}
 						<h3>But if you miss any ammo, you will need: </h3>
 						{lowS}
@@ -1416,16 +1476,23 @@ function CanMiss(props){
 			}	
 		}
 	}
-	if(props.verdict){
-		return miss;
+	
+	if(props.brain===2 && !hasCharge){
+		
+	} else {
+		if(props.verdict){
+			return miss;
+		}
 	}
+	
+
 }
 function ChargeShots(props){
 	var bossname = (props.boss.id==="mb") ? (props.boss.name+" 2") : props.boss.name;
 	if(props.verdict && props.charge){
 		return(
 			<div className="chargeshots">
-				<h3>If you only used Charge Shots:</h3>
+				<h3>If you only used <span className="item c">Charge Shots</span>:</h3>
 				<p className="chargeshots_c">You can kill {bossname} with <span className="c_value">{props.numC}</span> hits</p>
 			</div>
 		);

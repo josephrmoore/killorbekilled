@@ -1,13 +1,617 @@
+/* Reset */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td, button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+/* emember to define focus styles! */
+:focus {
+  outline: 0;
+}
+
+/* emember to highlight inserts somehow! */
+ins {
+  text-decoration: none;
+}
+del {
+  text-decoration: line-through;
+}
+
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+article,aside,canvas,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section,summary, video {
+  display:block;
+}
+
+
+/*  - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
+
 
 header .active {
 	color: red;
 }
 
-
-button.active {
-	background-color: yellow;
+header {
+	color: #fff;
 }
 
 .off {
 	display: none;
 }
+
+
+body {
+	background-color: #000;
+	font-family: "Silkscreen";
+}
+
+input, button, label {
+	font-family: "Silkscreen";
+}
+
+header {
+    font-size: 90px;
+    width: 100%;
+    text-align: center;
+    padding: 65px 0;
+    background: url("../public/bk3.png") repeat-x;
+}
+
+header div {
+	display: inline-block;
+}
+
+.home {
+	background: url("../public/smxyz_logo.png") no-repeat;
+    display: block;
+    width: 218px;
+    height: 30px;
+    background-size: 218px 30px;
+    text-indent: -9999px;
+    margin: 10px;
+    position: absolute;
+    top: 10px;
+}
+
+.ammo_input {
+    padding-top: 75px;
+    width: 75px;
+}
+
+.ammo_input input {
+    width: 68px;
+    display: block;
+    height: 20px;
+    font-size: 24px;
+    text-align: center;
+    padding: 5px 2px;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {  
+
+   opacity: 1;
+
+}
+
+.ammo_input label {
+	text-align: center;
+	width:75px;
+	display: block;
+	color: #fff;
+}
+
+.ammo_input.m {
+	background: url("../public/missiles.jpg") no-repeat 0 0;
+	background-size: 75px;
+}
+
+.ammo_input.s {
+	background: url("../public/supers.jpg") no-repeat 0 0;
+	background-size: 75px;
+}
+
+.ammo_input.pb {
+	background: url("../public/pbs.jpg") no-repeat 0 0;
+	background-size: 75px;
+}
+
+
+.playerinput {
+	background-color: #aeaeae;
+	position: relative;
+	border-bottom: 3px solid #484848;
+	border-top: 3px solid #484848;
+    background: url("../public/purplebush.jpg") repeat #aeaeae;
+}
+
+.bossframe {
+	position: relative;
+    background: url("../public/bluebush.jpg") repeat;
+}
+
+.bosspage {
+    width: 86%;
+    float: right;
+    padding: 2%;
+    border-left: 3px solid #aeaeae;
+    border-bottom: 3px solid #aeaeae;
+    background: url("../public/panel.jpg") repeat #888;
+}
+
+.bosspage.mb {
+	position: relative;
+	min-height: 1200px;
+}
+
+.bosspage.mb .results_container {
+	margin-left: 35%;
+}
+
+.boss_pic_name_hp {
+	width: 33%;
+	float: left;
+	margin-right: 2%;
+}
+
+.boss_pic_name_hp.mb, .boss_pic_name_hp.mb2 {
+	width: 23%;
+}
+
+.boss_pic_name_hp img {
+	width: 400px;
+	display: block;
+}
+
+.boss_pic_name_hp.mb {
+	position: absolute;
+	top: 20px;
+	left: 20px;
+}
+
+.boss_pic_name_hp.mb2 {
+	position: absolute;
+	top: 630px;
+	left: 20px;
+}
+
+.boss_pic_name_hp.mb img {
+	width: 300px;
+}
+
+.boss_pic_name_hp.mb2 img {
+	width: 300px;
+}
+
+.boss_pic_name_hp .boss_name {
+	font-size: 60px;
+	display: block;
+}
+
+
+.boss_pic_name_hp.mb .boss_name {
+	font-size: 36px;
+	color: #b94217;
+}
+
+.boss_pic_name_hp.mb2 .boss_name {
+	font-size: 36px;
+	color: #7a147a;
+}
+
+.boss_pic_name_hp.mb .boss_hp_text {
+	font-size: 36px;
+}
+
+.boss_pic_name_hp.mb2 .boss_hp_text {
+	font-size: 36px;
+}
+
+.boss_pic_name_hp.mb .boss_hp {
+	font-size: 72px;
+}
+
+.boss_pic_name_hp.mb2 .boss_hp {
+	font-size: 60px;
+}
+
+
+.finalform {
+	font-size: 24px;
+	display: block;
+	width: 100%;
+	text-align: center;
+	color: #333;
+}
+
+
+.bosspage.ridley .boss_name {
+	font-size: 100px;
+	color: #632d78;
+}
+
+.boss_pic_name_hp .boss_hp_text {
+	font-size: 48px;
+	display: block;
+	color: slategray;
+}
+
+.boss_pic_name_hp .boss_hp {
+	font-size: 80px;
+	color: #a01a1a;
+}
+
+h3 {
+	font-size: 36px;
+	margin-bottom: 20px;
+}
+
+.mb .killwith h3, .mb .stillneed h3, .mb .canmiss h3 {
+	font-size: 18px;
+}
+
+.ammoOr {
+	font-size: 36px;
+}
+
+.chargeshots {
+	text-align: center;
+}
+
+.chargeshots h3 {
+	font-size: 24px;
+	text-align: center;
+}
+
+.verdict_headline {
+	font-size: 80px;
+	margin-bottom: 40px;
+}
+
+.verdict_headline.no {
+	color: #a01a1a;
+}
+
+.verdict_headline.yes {
+	color: #f67e14;
+}
+
+.results_container {
+	width: 65%;
+    float: left;
+}
+
+
+.results_container.no {
+	text-align: center;
+}
+
+.boss_buttons {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 10%;
+	margin-top: 5%;
+	z-index: 50;
+}
+
+.boss_buttons button {
+	display: block;
+	width: 90%;
+	height: 50px;
+	border-top: 3px solid #aeaeae;
+	border-bottom: 3px solid #aeaeae;
+	border-left: 3px solid #aeaeae;	
+	margin: 10px 0 10px 10%;
+	color: #fff;
+	background-color: #000;
+}
+
+.boss_buttons button.active {
+	background-color: slategray;
+	color: #000;
+	scale: 1.2;
+}
+
+.boss_buttons button.active#ridley_button {
+	width: 81.7%;
+}
+
+.boss_buttons button.active#mb_button {
+	width: 82%;
+}
+
+.playerinput .input_headline{
+    color: #fff;
+    font-size: 18px;
+    width: 9%;
+    padding: 2.6% 2% 2.6% 0.5%;
+    float: left;
+    text-align: center;
+}
+
+.playerinput .beams {
+	width: 200px;
+	height: 100px;
+	float: left;
+	position: relative;
+	margin: 0 30px 0 30px;
+}
+
+.playerinput .ammo {
+	width: 330px;
+	float: left;
+	margin: 5px 30px 3px 0;
+} 
+
+.playerinput .beams .beam_input {
+	position: absolute;
+}
+
+.playerinput .beams .beam_input.C {
+	top: 30px;
+	left: 0;
+}
+
+
+.playerinput .beams .beam_input.I {
+	top: 30px;
+	left: 50px;
+}
+
+
+.playerinput .beams .beam_input.S {
+	top: 30px;
+	left: 100px;
+}
+
+
+.playerinput .beams .beam_input.W {
+	top: 75px;
+	left: 26px;
+}
+
+
+.playerinput .beams .beam_input.P {
+	top: 75px;
+	left: 76px;
+}
+
+
+.playerinput .ammo .ammo_input {
+	float: left;
+	margin-right: 35px;
+}
+
+
+.bossqs {
+	float:left;
+	margin: 5px 0;
+	position: relative;
+	color: #fff;
+}
+
+.bossqs .q_pbs, .bossqs .q_x {
+    padding: 5px 5px 30px 5px;
+    width: 300px;
+    border: 1px solid slategray;
+    margin-bottom: 10px;
+}
+
+.bossqs .q_x {
+	margin-bottom: 0;
+}
+
+
+.resultscontrols {
+	position: absolute;
+	top: 0;
+}
+
+.resultscontrols .slider_pb {
+    position: absolute;
+    top: 30px;
+    width: 400px;
+    left: 5px;
+}
+
+.resultscontrols .slider_x {
+    position: absolute;
+    top: 95px;
+    width: 400px;
+    left: 5px;
+}
+
+
+.beam_input, .beam_input button {
+	width: 36px;
+	height: 36px;
+	display: block;
+	text-indent: -9999em;
+	text-transform: uppercase; 
+}
+
+.beam_input.C button {
+	background: url("../public/c.png") no-repeat 2px 2px #000;
+	background-size: 26px;
+}
+
+.beam_input .beam {
+	border: 3px solid rgba(131, 134, 158, 0.9);
+	padding:3px;
+	cursor: pointer;
+}
+
+.beam_input .beam.active {
+	background-color: #fcfcae;
+	border-color: rgba(12, 245, 47, 0.34);
+}
+
+.beam_input.I button {
+	background: url("../public/i.png") no-repeat 2px 2px #000;
+	background-size: 26px;
+}
+
+.beam_input.S button {
+	background: url("../public/s.png") no-repeat 2px 2px #000;
+	background-size: 26px;
+}
+
+.beam_input.W button {
+	background: url("../public/w.png") no-repeat 2px 2px #000;
+	background-size: 26px;	
+}
+
+.beam_input.P button {
+	background: url("../public/p.png") no-repeat 2px 2px #000;
+	background-size: 26px;
+}
+
+
+.killwith {
+	border: 3px solid #444;
+	width: 50%;
+	float: left;
+	margin: 0 2% 4% 0;
+	min-height: 400px;
+	padding: 2%;
+	background-color: slategray;
+}
+
+.stillneed {
+	border: 3px solid #444;
+	padding: 2%;
+	width: 80%;
+	margin: 0 auto;
+	display: inline-block;
+	background-color: slategray;
+}
+
+.stillneed p {
+	font-size: 36px;
+}
+
+.canmiss {
+	border: 3px solid #444;
+	width: 38%;
+	float: left;
+	min-height: 400px;
+	padding: 2%;
+	background-color: slategray;
+}
+
+.stillneed p, .killwith p {
+	margin-bottom: 30px;
+	font-size: 36px;
+}
+
+.chargeshots p {
+	margin-bottom: 20px;
+	font-size: 28px;
+}
+
+
+.canmiss p {
+	margin-bottom: 20px;
+	font-size: 18px;
+}
+
+.canmiss h3 {
+	font-size: 13px;
+	text-align: center
+}
+
+.chargeshots {
+	border: 3px solid #444;
+	clear: both;
+	padding: 2%;
+	background-color: slategray;
+}
+
+.c_value, .value, .m_value, .s_value, .pb_value, .x_value {
+	color: #a01a1a;
+	font-weight: bold;
+}
+
+.stillneed_c, .item.c {
+	color: #ddd60f;
+}
+
+.stillneed_or {
+	display: block;
+	margin: 20px 0;
+}
+
+.stillneed .glass_ex p {
+	font-size: 26px;
+}
+
+.stillneed_items {
+	margin: 40px 0;
+}
+
+
+.item.m {
+	color: #e843ea;
+}
+
+.item.s{
+	color: #59ec5c;
+}
+
+.item.pb{
+	color: #d59411;
+}
+
+.item.x{
+	color: #a308ae;
+}
+
+/*  - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
+
+
+/* Clearing Floats */
+
+.group:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+* html .group             { zoom: 1; } /* IE6 */
+*:first-child+html .group { zoom: 1; } /* IE7 */
